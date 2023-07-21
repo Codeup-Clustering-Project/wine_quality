@@ -88,7 +88,7 @@ def volatile_cluster_model(x_feature_selected, train_scaled):
 
     return feature_combinations, ceters
 
-###################################### VISUALIZE ###########
+###################################### VISUALIZE #############################################
 
 def wine_color_quality_viz(train):
     '''This function visualizes the boxplot between red and white wines and quality score.'''
@@ -100,7 +100,7 @@ def wine_color_quality_viz(train):
    
     plt.title("Average Quality Score is the Same for Red or White Wine")
     plt.show()
-    
+
 def density_alcohol_viz(train):
     '''This function returns the scatterplot between density and alcohol'''
 
@@ -148,3 +148,74 @@ def volatile_sulfur_viz(train):
     plt.title("Weak Relationship Between Volatile Acidity and Free Sulphur Dioxides")
 
     plt.show()
+
+
+###################################### MODELING #############################################
+
+def modeling_prep_and_baseline(train_scaled, val_scaled, test_scaled):
+    '''This function bins the target, adds clusters, creates dummies for clusters,
+        separates the features from the target, and calculates baseline. '''
+
+        # separate low quality from high quality wine
+    train_scaled['quality_bin'] = train_scaled.quality.astype(str).str.replace(r'\b[3-5]\b', '0',regex=True).str.replace(r'\b[6-9]\b', '1',regex=True).astype(int)
+    val_scaled['quality_bin'] = val_scaled.quality.astype(str).str.replace(r'\b[3-5]\b', '0',regex=True).str.replace(r'\b[6-9]\b', '1',regex=True).astype(int)
+    test_scaled['quality_bin'] = test_scaled.quality.astype(str).str.replace(r'\b[3-5]\b', '0',regex=True).str.replace(r'\b[6-9]\b', '1',regex=True).astype(int)
+
+
+    # give the cluster valide names
+    train_scaled.clusters_3 = train_scaled.clusters_3.astype(str).str.replace(
+        "0","density and volatile acid (high, low)").str.replace(
+        "1", "density and volatile acid (low, low)").str.replace(
+        "2","density and volatile acid (high, high)")
+
+    # apply to validate
+    # give the cluster valide names
+    val_scaled.clusters_3 = val_scaled.clusters_3.astype(str).str.replace(
+        "0","density and volatile acid (high, low)").str.replace(
+        "1", "density and volatile acid (low, low)").str.replace(
+        "2","density and volatile acid (high, high)")
+
+    # apply to validate
+    # give the cluster valide names
+    test_scaled.clusters_3 = test_scaled.clusters_3.astype(str).str.replace(
+        "0","density and volatile acid (high, low)").str.replace(
+        "1", "density and volatile acid (low, low)").str.replace(
+        "2","density and volatile acid (high, high)")
+
+    # get cluster dummies
+    cluster_dummies = pd.get_dummies(train_scaled.clusters_3)
+    val_cluster_dummies = pd.get_dummies(val_scaled.clusters_3)
+    test_cluster_dummies = pd.get_dummies(test_scaled.clusters_3)
+
+    # new cleaned column names
+    cluster_col = cluster_dummies.columns.str.replace(" ","_").str.lower()
+
+    # add the dummies to the dataframe
+    train_scaled[cluster_col] = cluster_dummies
+    val_scaled[cluster_col] = val_cluster_dummies
+    test_scaled[cluster_col] = test_cluster_dummies
+
+    # assign features and labels for the model
+    xtrain = train_scaled[np.append(cluster_col, ["white", "free_sulfur_dioxide_scaled", 
+                                              "alcohol_scaled", "density_scaled", "volatile_acidity_scaled"])]
+    ytrain = train_scaled.quality_bin
+
+    # validate
+    xval = val_scaled[np.append(cluster_col, ["white","free_sulfur_dioxide_scaled", 
+                                          "alcohol_scaled", "density_scaled", "volatile_acidity_scaled"])]
+    yval = val_scaled.quality_bin
+
+    # test
+    xtest = test_scaled[np.append(cluster_col, ["white","free_sulfur_dioxide_scaled", 
+                                          "alcohol_scaled", "density_scaled", "volatile_acidity_scaled"])]
+    ytest = test_scaled.quality_bin
+
+    # calculate and add bseline to the training data
+    train_scaled["baseline"] = int(ytrain.mode())
+
+    # baseline score
+    baseline =accuracy_score( ytrain, train_scaled.baseline)
+
+    print(f'Baseline Accuracy : {baseline}')
+
+    return train_scaled, val_scaled, test_scaled
