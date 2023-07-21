@@ -1,139 +1,75 @@
-# <a name="top"></a>README TITLE
-![]()
-by: Victoire Migashane and Elizabeth Warren
-<p>
+# California Wine Quality Project
 
-  </a>
-</p>
-***
-[[Project Description](#project_description)]
-[[Project Planning](#planning)]
-[[Key Findings](#findings)]
-[[Data Dictionary](#dictionary)]
-[[Data Acquire and Prep](#wrangle)]
-[[Data Exploration](#explore)]
-[[Statistical Analysis](#stats)]
-[[Modeling](#model)]
-[[Conclusion](#conclusion)]
-___
-<!-- <img src="https://docs.google.com/drawings/d/e/2PACX-1vR19fsVfxHvzjrp0kSMlzHlmyU0oeTTAcnTUT9dNe4wAEXv_2WJNViUa9qzjkvcpvkFeUCyatccINde/pub?w=1389&amp;h=410"> -->
-## <a name="project_description"></a>Project Description:
-[[Back to top](#top)]
-***
-## <a name="planning"></a>Project Planning: 
-[[Back to top](#top)]
-### Project Outline:
+# Project Description
+This project aims to build a model using a variety of features to predict the quality score of wines.
+
+# Project Goal
+  * Determine what features in the dataset are related to wine quality score.
+  * Use these findings to create a model to predict the wine quality score.
+  * Share findings on the model with the data science team.
+
+# Initial Thoughts
+My initial thoughts are that property value will be dependent on the counties that they are located in since the home value is the tax assessed value. 
+
+# The Plan
+  * Acquire data from Data.World
+    * Original dataset combined from two separate dataframes into one
+    * 6497 rows and 13 columns in final dataframe
+    
+  * Prepare data
+    * Rename columns
+    * No null values in the data  
+    * Remove 1177 duplicated rows
+    * Create dummie varaibles (wine_clr)
+    * Split data into train, validate, and test. (60/20/20 split)
+    * Scale all columns except the target (quality) and the encoded (wine_clr)
+      
+  * Explore the data
+    * Use Recursive Feature Elimination to determine best features for wine quality
+    * Answer the questions:
+        * Does the average quality score differ between red or white wines?
+        * Is there a relationship between volatile acidity and density?
+        * What does clustering show us about this correlation?
+        * Is there a relationship between density and alcohol level?
+        * Is there a relationship between volatile acidity and free sulfur dioxide?
         
-### Hypothesis
-### Target variable
-### Need to haves (Deliverables):
-### Nice to haves (With more time):
-***
-## <a name="findings"></a>Key Findings:
-[[Back to top](#top)]
-***
-## <a name="dictionary"></a>Data Dictionary  
-[[Back to top](#top)]
-### Data Used
----
-| Attribute | Definition | Data Type |
-| ----- | ----- | ----- |
-| | | |
-| | | |
-| | | |
-| | | |
-| | | |
-| | | |
-***
-## <a name="wrangle"></a>Data Acquisition and Preparation
-[[Back to top](#top)]
-![]()
-### Wrangle steps: 
-*********************
-## <a name="explore"></a>Data Exploration:
-[[Back to top](#top)]
-- Python files used for exploration:
-    - wrangle.py 
-    - explore.py
-    - modeling.py
-### Takeaways from exploration:
-***
-## <a name="stats"></a>Statistical Analysis
-[[Back to top](#top)]
-### Stats Test 1: ANOVA Test: One Way
-Analysis of variance, or ANOVA, is a statistical method that separates observed variance data into different components to use for additional tests. 
-A one-way ANOVA is used for three or more groups of data, to gain information about the relationship between the dependent and independent variables: in this case our clusters vs. the log_error, respectively.
-To run the ANOVA test in Python use the following import: \
-<span style="color:green">from</span> scipy.stats <span style="color:green">import</span> f_oneway
-- f_oneway, in this case, takes in the individual clusters and returns the f-statistic, f, and the p_value, p:
-    - the f-statistic is simply a ratio of two variances. 
-    - The p_vlaue is the probability of obtaining test results at least as extreme as the results actually observed, under the assumption that the null hypothesis is correct
-#### Hypothesis:
-- The null hypothesis (H<sub>0</sub>) is
-- The alternate hypothesis (H<sub>1</sub>) is 
-#### Confidence level and alpha value:
-- I established a 95% confidence level
-- alpha = 1 - confidence, therefore alpha is 0.05
-#### Results:
-#### Summary:
-### Stats Test 2: T-Test: One Sample, Two Tailed
-- A T-test allows me to compare a categorical and a continuous variable by comparing the mean of the continuous variable by subgroups based on the categorical variable
-- The t-test returns the t-statistic and the p-value:
-    - t-statistic: 
-        - Is the ratio of the departure of the estimated value of a parameter from its hypothesized value to its standard error. It is used in hypothesis testing via Student's t-test. 
-        - It is used in a t-test to determine if you should support or reject the null hypothesis
-        - t-statistic of 0 = H<sub>0</sub>
-    -  - the p-value:
-        - The probability of obtaining test results at least as extreme as the results actually observed, under the assumption that the null hypothesis is correct
-- We wanted to compare the individual clusters to the total population. 
-    - Cluster1 to the mean of ALL clusters
-    - Cluster2 to the mean of ALL clusters, etc.
-#### Hypothesis:
-- The null hypothesis (H<sub>0</sub>) is 
-- The alternate hypothesis (H<sub>1</sub>) is 
-#### Confidence level and alpha value:
-- I established a 95% confidence level
-- alpha = 1 - confidence, therefore alpha is 0.05
-#### Results:
-#### Summary:
-***
-## <a name="model"></a>Modeling:
-[[Back to top](#top)]
-### Model Preparation:
-### Baseline
-    
-- Baseline Results: 
-    
-- Selected features to input into models:
-    - features = []
-***
-### Models and R<sup>2</sup> Values:
-- Will run the following regression models:
-    
-- Other indicators of model performance with breif defiition and why it's important:
-    
-    
-#### Model 1: Linear Regression (OLS)
-- Model 1 results:
-### Model 2 : Lasso Lars Model
-- Model 2 results:
-### Model 3 : Tweedie Regressor (GLM)
-- Model 3 results:
-### Model 4: Quadratic Regression Model
-- Model 4 results:
-## Selecting the Best Model:
-### Use Table below as a template for all Modeling results for easy comparison:
-| Model | Validation/Out of Sample RMSE | R<sup>2</sup> Value |
-| ---- | ----| ---- |
-| Baseline | 0.167366 | 2.2204 x 10<sup>-16</sup> |
-| Linear Regression (OLS) | 0.166731 | 2.1433 x 10<sup>-3</sup> |  
-| Tweedie Regressor (GLM) | 0.155186 | 9.4673 x 10<sup>-4</sup>|  
-| Lasso Lars | 0.166731 | 2.2204 x 10<sup>-16</sup> |  
-| Quadratic Regression | 0.027786 | 2.4659 x 10<sup>-3</sup> |  
-- {} model performed the best
-## Testing the Model
-- Model Testing Results
-***
-## <a name="conclusion"></a>Conclusion:
-[[Back to top](#top)]
+  * Develop a model to predict wine quality score
+    * Use accuracy as my evaluation metric.
+    * Baseline will be the mode of quality score.
+    * Target variable was binned to improve model performance.
+        * Low Score Wine: Quality Score of 5 and Lower
+        * High Score Wine: Quality Score of 6 and Higher
+   
+  * Make conclusions.
 
+# Data Dictionary
+|**Feature**|**Description**|
+|:-----------|:---------------|
+|Fixed Acidity |The total concentration of non-volatile acids in wine, contributing to its overall tartness and structure.|
+|Volatile Acidity | The presence of volatile acids in wine, which in excessive amounts can lead to undesirable vinegar-like off-flavors.|
+|Citric Acid |A specific type of acid naturally occurring in grapes and sometimes used in winemaking to enhance acidity levels|
+|Residual Sugar | The amount of sugar remaining in the wine after fermentation, influencing its perceived sweetness. |
+|Chlorides| Salts of hydrochloric acid that can impact the taste and mouthfeel of wine in small quantities.|
+|Free Sulfur Dioxide|The form of sulfur dioxide that is not bound to other compounds, used as a preservative in winemaking to prevent oxidation and microbial spoilage. |
+|Total Sulfur Dioxide|The combined measurement of free and bound sulfur dioxide in wine, representing the overall concentration of this preservative. |
+|Density| The mass of the wine relative to the volume, which can help determine the alcohol content in some cases.|
+|pH|A measure of the wine's acidity or alkalinity, affecting its stability and microbial activity. |
+|Sulphate| A form of sulfur that occurs naturally in grapes and can impact the fermentation process and wine stability. |
+|Alcohol| The ethyl alcohol content in the wine, resulting from the fermentation of sugars by yeast.|
+|Quality| A subjective assessment of a wine's overall excellence, taking into account various sensory attributes, balance, and complexity.|
+
+# Steps to Reproduce
+  * Clone this repo
+  * Acquire the data
+  * Put the data in the same file as cloned repo
+  * Run the final_report notebook
+
+# Conclusions
+  * 
+
+# Next Steps
+   * 
+
+# Recommendations
+  * 
+  
