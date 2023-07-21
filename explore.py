@@ -54,7 +54,7 @@ def volatile_cluster_model(x_feature_selected, train_scaled):
     '''This function'''
 
     # Get all continous columns for cobinations and leave the encoded columns
-    columns_to_combine = x_feature_selected.columns[~x_feature_selected.columns.isin(["white"])]
+    columns_to_combine = x_feature_selected.columns[~x_feature_selected.columns.isin(["white", "clusters_3", "clusters_2"])]
 
     feature_combinations = list(combinations(columns_to_combine, 2))
 
@@ -156,36 +156,57 @@ def modeling_prep_and_baseline(train_scaled, val_scaled, test_scaled):
     '''This function bins the target, adds clusters, creates dummies for clusters,
         separates the features from the target, and calculates baseline. '''
 
-        # separate low quality from high quality wine
+    # separate low quality from high quality wine
     train_scaled['quality_bin'] = train_scaled.quality.astype(str).str.replace(r'\b[3-5]\b', '0',regex=True).str.replace(r'\b[6-9]\b', '1',regex=True).astype(int)
     val_scaled['quality_bin'] = val_scaled.quality.astype(str).str.replace(r'\b[3-5]\b', '0',regex=True).str.replace(r'\b[6-9]\b', '1',regex=True).astype(int)
     test_scaled['quality_bin'] = test_scaled.quality.astype(str).str.replace(r'\b[3-5]\b', '0',regex=True).str.replace(r'\b[6-9]\b', '1',regex=True).astype(int)
 
 
     # give the cluster valide names
-    train_scaled.clusters_3 = train_scaled.clusters_3.astype(str).str.replace(
+    train_scaled.dens_valAcid_cluster = train_scaled.dens_valAcid_cluster.astype(str).str.replace(
         "0","density and volatile acid (high, low)").str.replace(
         "1", "density and volatile acid (low, low)").str.replace(
         "2","density and volatile acid (high, high)")
 
     # apply to validate
     # give the cluster valide names
-    val_scaled.clusters_3 = val_scaled.clusters_3.astype(str).str.replace(
+    val_scaled.dens_valAcid_cluster = train_scaled.dens_valAcid_cluster.astype(str).str.replace(
         "0","density and volatile acid (high, low)").str.replace(
         "1", "density and volatile acid (low, low)").str.replace(
         "2","density and volatile acid (high, high)")
 
     # apply to validate
     # give the cluster valide names
-    test_scaled.clusters_3 = test_scaled.clusters_3.astype(str).str.replace(
+    test_scaled.dens_valAcid_cluster = train_scaled.dens_valAcid_cluster.astype(str).str.replace(
         "0","density and volatile acid (high, low)").str.replace(
         "1", "density and volatile acid (low, low)").str.replace(
         "2","density and volatile acid (high, high)")
+
+    # high density and high alcohol
+    # give the cluster valide names
+    train_scaled.dens_alc_cluster = train_scaled.dens_alc_cluster.astype(str).str.replace(
+        "0","density and alcohol (high, high)").str.replace(
+        "1", "density and alcohol (high, low)").str.replace(
+        "2","density and alcohol (mid, mid)")
+
+    # apply to validate
+    # give the cluster valide names
+    val_scaled.dens_alc_cluster = train_scaled.dens_alc_cluster.astype(str).str.replace(
+        "0","density and alcohol (high, high)").str.replace(
+        "1", "density and alcohol (high, low)").str.replace(
+        "2","density and alcohol (mid, mid)")
+
+    # apply to validate
+    # give the cluster valide names
+    test_scaled.dens_alc_cluster = train_scaled.dens_alc_cluster.astype(str).str.replace(
+        "0","density and alcohol (high, high)").str.replace(
+        "1", "density and alcohol (high, low)").str.replace(
+        "2","density and alcohol (mid, mid)")
 
     # get cluster dummies
-    cluster_dummies = pd.get_dummies(train_scaled.clusters_3)
-    val_cluster_dummies = pd.get_dummies(val_scaled.clusters_3)
-    test_cluster_dummies = pd.get_dummies(test_scaled.clusters_3)
+    cluster_dummies = pd.get_dummies(train_scaled[["dens_valAcid_cluster","dens_alc_cluster"]])
+    val_cluster_dummies = pd.get_dummies(val_scaled[["dens_valAcid_cluster","dens_alc_cluster"]])
+    test_cluster_dummies = pd.get_dummies(test_scaled[["dens_valAcid_cluster","dens_alc_cluster"]])
 
     # new cleaned column names
     cluster_col = cluster_dummies.columns.str.replace(" ","_").str.lower()
