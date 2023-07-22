@@ -9,7 +9,7 @@ This project aims to build a model using a variety of features to predict the qu
   * Share findings on the model with the data science team.
 
 # Initial Thoughts
-My initial thoughts are that property value will be dependent on the counties that they are located in since the home value is the tax assessed value. 
+Due to limited domain knowledge of the chemical properties of wine, feature selection may be the best option in selecting most important features for the model. 
 
 # The Plan
   * Acquire data from Data.World
@@ -65,11 +65,13 @@ My initial thoughts are that property value will be dependent on the counties th
   * Run the final_report notebook
 
 # Conclusions
-  * 
+  * Decision Tree is the best performing model with approximately 72% accuracy on unseen data.
+  * However, this accuracy only applies to the broad categories of low quality wine (quality score of < = 5) and high quality wine (quality score of > = 6)
 
 # Next Steps
-   * 
+  * Develop a model that can predict a specific quality score. 
 
 # Recommendations
-  * 
+  * If the current target groups of low vs high quality wine is sufficient, implement this model.
+  * Search for data that is from California wines because the location where the grapes and wine is produced may impact the physiochemical properties.
   
