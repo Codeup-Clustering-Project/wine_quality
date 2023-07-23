@@ -1,4 +1,20 @@
-# California Wine Quality Project
+# <a name="top"></a>California Wine Quality Project
+
+by: Victoire Migashane and Elizabeth Warren
+
+<p>
+  <a href="https://github.com/MigashaneVictoire" target="_blank">
+    <img alt="Victoire" src="https://img.shields.io/github/followers/MigashaneVictoire?label=Follow_Victoire&style=social" />
+  </a>
+</p>
+
+<p>
+  <a href="https://github.com/elizabethswarren" target="_blank">
+    <img alt="Elizabeth" src="https://img.shields.io/github/followers/elizabethswarren?label=Follow_Elizabeth&style=social" />
+  </a>
+</p>
+
+---
 
 # Project Description
 This project aims to build a model using a variety of features to predict the quality score of wines.
